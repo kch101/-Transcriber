@@ -1,0 +1,9 @@
+{
+  "hf_token": "",
+  "device": "cpu",
+  "compute_type": "int8",
+  "model_size": "large-v3",
+  "batch_size": 8,
+  "threads": 4,
+  "default_language": "ru"
+}

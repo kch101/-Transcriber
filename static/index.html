@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Расшифровка</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div class="fx-glow"></div>
+<div class="fx-scan"></div>
+<div class="fx-vignette"></div>
+<div id="dropveil" hidden><div><span>Отпустите, чтобы начать</span></div></div>
+
+<header class="top">
+  <div class="brand">
+    <div class="eyebrow" id="eyebrow">Local / Whisper large-v3 / CPU · int8</div>
+    <h1>Расшифровка</h1>
+    <div class="sub">голос в текст, полностью на этом маке</div>
+  </div>
+  <div class="hud" aria-hidden="true">
+    <div>T <b id="clock">00:00:00</b></div>
+    <div>STATE <b id="hudState">ГОТОВ</b></div>
+    <div id="hudExtra"></div>
+  </div>
+</header>
+
+<main>
+  <!-- Ожидание файла -->
+  <section id="vIdle">
+    <button type="button" class="drop" id="drop">
+      <span class="rings" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="drop-title">Перетащите запись сюда</span>
+      <span class="drop-sub">или нажмите, чтобы выбрать файл</span>
+      <span class="drop-fmt">mp3 · m4a · wav · ogg · opus · flac · aac · mp4 · mov · webm — всё, что читает ffmpeg</span>
+    </button>
+    <input type="file" id="fileInput" hidden>
+
+    <div class="opts">
+      <div class="opt">
+        <span class="lbl">Язык</span>
+        <div class="seg" role="group" aria-label="Язык" id="optLang">
+          <button type="button" data-v="ru" aria-pressed="true">RU</button>
+          <button type="button" data-v="en" aria-pressed="false">EN</button>
+          <button type="button" data-v="auto" aria-pressed="false">Авто</button>
+        </div>
+      </div>
+      <div class="opt">
+        <span class="lbl">Спикеры</span>
+        <div class="seg" role="group" aria-label="Число спикеров" id="optSpk">
+          <button type="button" data-v="off" aria-pressed="false" title="Без диаризации, сплошной текст">Не делить</button>
+          <button type="button" data-v="0" aria-pressed="true">Авто</button>
+          <button type="button" data-v="2" aria-pressed="false">2</button>
+          <button type="button" data-v="3" aria-pressed="false">3</button>
+          <button type="button" data-v="4" aria-pressed="false">4</button>
+          <button type="button" data-v="5" aria-pressed="false">5</button>
+          <button type="button" data-v="6" aria-pressed="false">6</button>
+        </div>
+      </div>
+    </div>
+    <p class="note" id="idleNote">Точное число спикеров улучшает разметку. Файл и промежуточные данные удаляются сразу после расшифровки.</p>
+  </section>
+
+  <!-- Обработка -->
+  <section id="vWork" hidden>
+    <div class="panel">
+      <div class="eyebrow row-between"><span>Обработка</span><span id="wElapsed">00:00</span></div>
+      <h2 id="wName">запись</h2>
+      <div class="meta" id="wMeta"></div>
+      <ol class="stages" id="stages"></ol>
+      <div class="row-between">
+        <span class="note" id="wNote">Окно можно свернуть: расшифровка идёт в фоне.</span>
+        <button type="button" class="btn ghost danger" id="cancel">Остановить</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ошибка -->
+  <section id="vError" hidden>
+    <div class="panel err">
+      <div class="eyebrow">Сбой</div>
+      <h2>Не получилось расшифровать</h2>
+      <p class="errmsg" id="errMsg"></p>
+      <button type="button" class="btn" id="retry">Выбрать другой файл</button>
+    </div>
+  </section>
+
+  <!-- Результат -->
+  <section id="vDone" hidden>
+    <div class="bar">
+      <div class="bar-main">
+        <input id="title" class="title" spellcheck="false" aria-label="Название">
+        <div class="meta" id="dMeta"></div>
+      </div>
+      <div class="actions">
+        <span class="lbl">Сохранить</span>
+        <div class="seg" role="group" aria-label="Сохранить">
+          <button type="button" data-fmt="pdf">PDF</button>
+          <button type="button" data-fmt="docx">Word</button>
+          <button type="button" data-fmt="txt">TXT</button>
+        </div>
+        <button type="button" class="btn ghost" id="copy">Копировать</button>
+        <button type="button" class="btn ghost" id="again">Новая запись</button>
+      </div>
+    </div>
+
+    <div class="tools">
+      <div class="speakers" id="speakers"></div>
+      <label class="toggle"><input type="checkbox" id="ts" checked><span>Таймкоды</span></label>
+    </div>
+
+    <article class="doc" id="doc"></article>
+    <p class="note center" id="docHint">Текст можно поправить прямо здесь, правки попадут в экспорт.</p>
+  </section>
+</main>
+
+<div id="toast" hidden role="status"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>

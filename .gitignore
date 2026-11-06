@@ -1,0 +1,22 @@
+# Локальные настройки и секреты
+config.json
+.env
+
+# Окружение и сборка
+.venv/
+__pycache__/
+*.pyc
+*.app
+
+# Записи и расшифровки не должны попадать в репозиторий
+*.wav
+*.m4a
+*.mp3
+*.ogg
+*.opus
+*.flac
+*.txt
+!requirements.txt
+!constraints.txt
+
+.DS_Store
